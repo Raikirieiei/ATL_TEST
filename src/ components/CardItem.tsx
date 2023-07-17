@@ -11,15 +11,16 @@ type CardProps = {
         email: string,
         gender: string,
         tel: string
-    };
+    },
+    handleOpenEdit: () => void;
 }
 
-const CardItem: React.FC<CardProps> = ({ item }) => {
+const CardItem: React.FC<CardProps> = ({ item, handleOpenEdit }) => {
 
     const ExtraCard = () => {
         return (
             <div>
-                <Button className='mx-2'> <AiFillEdit /> </Button>
+                <Button className='mx-2' onClick={handleOpenEdit}> <AiFillEdit /> </Button>
                 <Button> <AiFillDelete /> </Button>
             </div>
         )
