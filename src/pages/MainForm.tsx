@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import './mainform.css'
-import { Button, Form, Modal, Input, Radio, InputNumber } from 'antd'
+import { Button, Form, Pagination } from 'antd'
+import type { PaginationProps } from 'antd';
 import CardItem from '../ components/CardItem'
 import ModalForm from '../ components/ModalForm'
 
@@ -9,6 +10,8 @@ const MainForm = () => {
     const [openAdd, setOpenAdd] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [form] = Form.useForm();
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemPerPage = 4
 
     const list = [
         {
@@ -16,6 +19,7 @@ const MainForm = () => {
             name: 'eiei1',
             lastname: 'gum1',
             email: 'nonono1@aaa.com',
+            birthdate: '12/12/2000',
             gender: 'male',
             tel: '0001',
         },
@@ -25,6 +29,7 @@ const MainForm = () => {
             lastname: 'gum2',
             email: 'nonono2@aaa.com',
             gender: 'female',
+            birthdate: '12/12/2000',
             tel: '0002',
         },
         {
@@ -33,10 +38,24 @@ const MainForm = () => {
             lastname: 'gum3',
             email: 'nonono3@aaa.com',
             gender: 'other',
+            birthdate: '12/12/2000',
             tel: '0003',
         },
     ]
 
+
+
+    const onChangePage: PaginationProps['onChange'] = (page) => {
+        console.log(page);
+        setCurrentPage(page);
+    };
+
+
+    const indexLastItem = currentPage *  itemPerPage
+    const indexFirstItem = indexLastItem - itemPerPage
+    const itemInPage = list.slice(indexFirstItem, indexLastItem)
+
+    
     const handleOpenAdd = () => {
         setOpenAdd(true);
     };
@@ -89,17 +108,20 @@ const MainForm = () => {
                     handleClose={handleCloseEdit}
                     handleSubmit={handleSubmitEdit}
                 />
+
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-2 overflow-auto'>
-                {list.map((item) => (
+                {itemInPage.map((item) => (
                     <>
                         <CardItem item={item} handleOpenEdit={handleOpenEdit} />
                     </>
                 ))}
 
             </div>
-
+            <div className='flex justify-center items-center'>
+                <Pagination current={currentPage} onChange={onChangePage} total={list.length} pageSize={itemPerPage} />
+            </div>
         </div>
     )
 }

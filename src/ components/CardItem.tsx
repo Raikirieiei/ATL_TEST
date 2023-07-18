@@ -10,6 +10,7 @@ type CardProps = {
         lastname: string,
         email: string,
         gender: string,
+        birthdate: string,
         tel: string
     },
     handleOpenEdit: () => void;
@@ -36,6 +37,10 @@ const CardItem: React.FC<CardProps> = ({ item, handleOpenEdit }) => {
                     <div className='flex'>
                         <p className='font-bold pr-2'>Email:</p>
                         <p>{item.email}</p>
+                    </div>
+                    <div className='flex'>
+                        <p className='font-bold pr-2'>BirthDate:</p>
+                        <p>{item.birthdate}</p>
                     </div>
                     <div className='flex'>
                         <p className='font-bold pr-2'>Gender:</p>

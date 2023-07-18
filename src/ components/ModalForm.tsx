@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Form, Modal, Input, Radio, InputNumber, FormInstance } from 'antd'
+import { Button, Form, Modal, Input, Radio, InputNumber, FormInstance, DatePicker, DatePickerProps } from 'antd'
 
 type ModalProps = {
     operation: string,
@@ -29,11 +29,17 @@ const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit,
         },
     };
 
+    const customFormat1 = 'DD/MM/YYYY'
+
+    const customFormat: DatePickerProps['format'] = (value) =>
+    `${value.format(customFormat1)}`;
+
     return (
         <Modal
             title={`${operation == 'add' ? 'Add' : 'Edit'} Information`}
             open={modalState}
             onCancel={handleClose}
+            width={750}
             footer={[
                 <Button key="cancel" onClick={handleClose}>
                     Cancel
@@ -79,6 +85,13 @@ const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit,
                             <Radio value={item.value}>{item.label}</Radio>
                         )}
                     </Radio.Group>
+                </Form.Item>
+                <Form.Item
+                    label="Date of Birth"
+                    name="birthdate"
+                    rules={[{ required: true, message: 'Please select your birth date' }]}
+                >
+                    <DatePicker style={{ width: '100%' }} format={customFormat}  />
                 </Form.Item>
                 <Form.Item
                     label="Tel"
