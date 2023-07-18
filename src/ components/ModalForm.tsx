@@ -6,10 +6,20 @@ type ModalProps = {
     form: FormInstance<any>,
     modalState: boolean,
     handleClose: () => void,
-    handleSubmit: (values: any) => void
+    handleSubmit: (values: any) => void,
+    item?: {
+        id: number,
+        name: string,
+        lastname: string,
+        email: string,
+        gender: string,
+        birthdate: string,
+        tel: string
+    },
+
 }
 
-const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit, modalState, form }) => {
+const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit, modalState, form, item }) => {
 
 
     const genderArray = [
@@ -29,14 +39,15 @@ const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit,
         },
     };
 
-    const customFormat1 = 'DD/MM/YYYY'
+    const customFormat1 = 'DD-MM-YYYY'
 
     const customFormat: DatePickerProps['format'] = (value) =>
-    `${value.format(customFormat1)}`;
+        `${value.format(customFormat1)}`;
+        
 
     return (
         <Modal
-            title={`${operation == 'add' ? 'Add' : 'Edit'} Information`}
+            title={`${operation === 'add' ? 'Add' : 'Edit'} Information`}
             open={modalState}
             onCancel={handleClose}
             width={750}
@@ -91,7 +102,7 @@ const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit,
                     name="birthdate"
                     rules={[{ required: true, message: 'Please select your birth date' }]}
                 >
-                    <DatePicker style={{ width: '100%' }} format={customFormat}  />
+                    <DatePicker style={{ width: '100%' }} format={customFormat} placeholder='DD-MM-YYYY' />
                 </Form.Item>
                 <Form.Item
                     label="Tel"

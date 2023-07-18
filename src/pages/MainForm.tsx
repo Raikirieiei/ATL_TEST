@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './mainform.css'
 import { Button, Form, Pagination } from 'antd'
 import type { PaginationProps } from 'antd';
 import CardItem from '../ components/CardItem'
 import ModalForm from '../ components/ModalForm'
+import { DataContext } from '../contexts/FormContext';
+import { ContextData } from "../datatypes/dataType";
 
 const MainForm = () => {
 
@@ -13,47 +15,16 @@ const MainForm = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemPerPage = 4
 
-    const list = [
-        {
-            id: 1,
-            name: 'eiei1',
-            lastname: 'gum1',
-            email: 'nonono1@aaa.com',
-            birthdate: '12/12/2000',
-            gender: 'male',
-            tel: '0001',
-        },
-        {
-            id: 2,
-            name: 'eiei2',
-            lastname: 'gum2',
-            email: 'nonono2@aaa.com',
-            gender: 'female',
-            birthdate: '12/12/2000',
-            tel: '0002',
-        },
-        {
-            id: 3,
-            name: 'eiei3',
-            lastname: 'gum3',
-            email: 'nonono3@aaa.com',
-            gender: 'other',
-            birthdate: '12/12/2000',
-            tel: '0003',
-        },
-    ]
-
-
+    const {datas , addData, updateData, deleteData} = useContext(DataContext) as ContextData
 
     const onChangePage: PaginationProps['onChange'] = (page) => {
-        console.log(page);
         setCurrentPage(page);
     };
 
 
     const indexLastItem = currentPage *  itemPerPage
     const indexFirstItem = indexLastItem - itemPerPage
-    const itemInPage = list.slice(indexFirstItem, indexLastItem)
+    const itemInPage = datas.slice(indexFirstItem, indexLastItem)
 
     
     const handleOpenAdd = () => {
@@ -66,6 +37,7 @@ const MainForm = () => {
 
     const handleSubmitAdd = (values: any) => {
         console.log('Submitted values:', values);
+        addData(values);
         setOpenAdd(false);
     };
 
@@ -78,9 +50,14 @@ const MainForm = () => {
     };
 
     const handleSubmitEdit = (values: any) => {
-        console.log('Submitted values:', values);
+        console.log('updated values:', values);
+        updateData(values)
         setOpenEdit(false);
     };
+
+    const handleDelete = (id: number) => {
+        deleteData(id)
+    }
 
     return (
         <div className='md:container md:mx-auto'>
@@ -108,19 +85,18 @@ const MainForm = () => {
                     handleClose={handleCloseEdit}
                     handleSubmit={handleSubmitEdit}
                 />
-
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-2 overflow-auto'>
                 {itemInPage.map((item) => (
                     <>
-                        <CardItem item={item} handleOpenEdit={handleOpenEdit} />
+                        <CardItem key={item.id} item={item} handleOpenEdit={handleOpenEdit} deleteData={handleDelete} />
                     </>
                 ))}
 
             </div>
             <div className='flex justify-center items-center'>
-                <Pagination current={currentPage} onChange={onChangePage} total={list.length} pageSize={itemPerPage} />
+                <Pagination current={currentPage} onChange={onChangePage} total={datas.length} pageSize={itemPerPage} />
             </div>
         </div>
     )
