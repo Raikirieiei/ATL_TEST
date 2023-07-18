@@ -25,6 +25,10 @@ const DataProvider: React.FC<Props> = ({ children }) => {
     localStorage.setItem('data', JSON.stringify(datas));
   }, [datas]);
 
+  useEffect(() => {
+    localStorage.setItem('counter', JSON.stringify(idCounter))
+  }, [idCounter]);
+
   const addData = (data: DataType) => {
     const formattedBirthdate: string = dayjs(data.birthdate).format('DD-MM-YYYY');
     const newData: DataType = {
@@ -37,7 +41,6 @@ const DataProvider: React.FC<Props> = ({ children }) => {
       tel: data.tel
     }
     setData([...datas, newData])
-    localStorage.setItem('counter', JSON.stringify(idCounter))
     setIdCounter(prev => prev+1)
   }
 

@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button, Form, Modal, Input, Radio, InputNumber, FormInstance, DatePicker, DatePickerProps } from 'antd'
+import { DataContext } from '../contexts/FormContext';
+import { ContextData } from "../datatypes/dataType";
 
 type ModalProps = {
     operation: string,
@@ -21,6 +23,7 @@ type ModalProps = {
 
 const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit, modalState, form, item }) => {
 
+    const {datas} = useContext(DataContext) as ContextData
 
     const genderArray = [
         { label: 'Male', value: 'male' },
@@ -44,7 +47,8 @@ const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit,
     const customFormat: DatePickerProps['format'] = (value) =>
         `${value.format(customFormat1)}`;
         
-
+    console.log(datas);
+    
     return (
         <Modal
             title={`${operation === 'add' ? 'Add' : 'Edit'} Information`}
