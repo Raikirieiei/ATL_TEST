@@ -1,8 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Button, Form, Modal, Input, Radio, InputNumber, FormInstance, DatePicker, DatePickerProps } from 'antd'
-// import { DataContext } from '../contexts/FormContext';
-// import { ContextData } from "../datatypes/dataType";
-// import dayjs from 'dayjs';
 
 type ModalProps = {
     operation: string,
@@ -24,25 +21,6 @@ type ModalProps = {
 }
 
 const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit, modalState, form, item, id }) => {
-
-    // const { datas } = useContext(DataContext) as ContextData
-    // const [currentData, setCurrentData] = useState<any>({})
-    // const [birthDate, setBirthDate] = useState<any>({})
-
-    // useEffect(() => {
-    //     const changeCurrData = () => {
-    //         const currData = datas.find((data) => data.id === id);
-    //         console.log(currData);
-    //         const dayjsBirthDate = dayjs(currData?.birthdate)
-    //         console.log(birthDate);
-    //         setCurrentData(currData)
-    //         setBirthDate(dayjsBirthDate)
-    //     }
-
-    //     changeCurrData()
-        
-    // }, [id, datas])
-    
 
     const genderArray = [
         { label: 'Male', value: 'male' },
@@ -101,16 +79,13 @@ const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit,
                     label="Name"
                     name="name"
                     rules={[{ required: true, message: 'Please enter your name' }]}
-                    // initialValue={operation === 'edit' && currentData ? `${currentData.name}` : ''}
                 >
-                    {/* <Input /> */}
                     <Input />
                 </Form.Item>
                 <Form.Item
                     label="Lastname"
                     name="lastname"
                     rules={[{ required: true, message: 'Please enter your last name' }]}
-                    // initialValue={operation === 'edit' && currentData ? `${currentData.lastname}` : ''}
                 >
                     <Input />
                 </Form.Item>
@@ -121,7 +96,6 @@ const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit,
                         { required: true, message: 'Please enter your email' },
                         { type: 'email', message: 'Please enter a valid email' },
                     ]}
-                    // initialValue={operation === 'edit' && currentData ? `${currentData.email}` : ''}
                 >
                     <Input />
                 </Form.Item>
@@ -129,7 +103,6 @@ const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit,
                     label="Gender"
                     name="gender"
                     rules={[{ required: true, message: 'Please select your gender' }]}
-                    // initialValue={operation === 'edit' && currentData ? `${currentData.gender}` : ''}
                 >
                     <Radio.Group
                     >
@@ -142,13 +115,8 @@ const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit,
                     label="Date of Birth"
                     name="birthdate"
                     rules={[{ required: true, message: 'Please select your birth date' }]}
-                    // initialValue={operation === 'edit' && currentData ? birthDate : ''}
                 >
-                    {/* {operation === 'edit' && currentData ? (
                         <DatePicker style={{ width: '100%' }} format={customFormat} placeholder='DD-MM-YYYY' />
-                    ) : ( */}
-                        <DatePicker style={{ width: '100%' }} format={customFormat} placeholder='DD-MM-YYYY' />
-                    {/* )} */}
                 </Form.Item>
                 <Form.Item
                     label="Tel"
@@ -156,7 +124,6 @@ const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit,
                     rules={[
                         { required: true, message: 'Please enter your tel number' },
                     ]}
-                    // initialValue={operation === 'edit' && currentData ? `${currentData.tel}` : ''}
                 >
                     <InputNumber controls={false} style={{ width: '100%' }} />
                 </Form.Item>

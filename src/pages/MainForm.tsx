@@ -37,7 +37,6 @@ const MainForm = () => {
     };
 
     const handleSubmitAdd = (values: any) => {
-        console.log('Submitted values:', values);
         const id = idCounter
         addData({ ...values, id });
         setOpenAdd(false);
@@ -53,7 +52,6 @@ const MainForm = () => {
     };
 
     const handleSubmitEdit = (values: any) => {
-        console.log('updated values:', values);
         updateData(values)
         setOpenEdit(false);
     };
