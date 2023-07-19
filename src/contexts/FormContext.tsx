@@ -32,7 +32,7 @@ const DataProvider: React.FC<Props> = ({ children }) => {
   const addData = (data: DataType) => {
     const formattedBirthdate: string = dayjs(data.birthdate).format('DD-MM-YYYY');
     const newData: DataType = {
-      id: idCounter,
+      id: data.id,
       name: data.name,
       lastname: data.lastname,
       email: data.email,
@@ -45,29 +45,26 @@ const DataProvider: React.FC<Props> = ({ children }) => {
   }
 
   const updateData = (data: DataType) => {
-    console.log('data', data);
-    
+  
+    const dataIndex = datas.findIndex((item) => item.id === data.id);
     const formattedBirthdate: string = dayjs(data.birthdate).format('DD-MM-YYYY');
 
-    const dataIndex = datas.findIndex((item) => item.id === data.id);
-
-    if (dataIndex !== -1) {
-      const updatedItem: DataType = {
-        id: data.id,
-        name: data.name,
-        lastname: data.lastname,
-        email: data.email,
-        gender: data.gender,
-        birthdate: formattedBirthdate,
-        tel: data.tel
-      };
-  
-      const updatedDatas = [...datas];
-
-      updatedDatas[dataIndex] = updatedItem;
-  
-      setData(updatedDatas);
+    const newUpdatedData: DataType = {
+      id: data.id,
+      name: data.name,
+      lastname: data.lastname,
+      email: data.email,
+      gender: data.gender,
+      birthdate: formattedBirthdate,
+      tel: data.tel
     }
+
+    const updatedDatas = [...datas];
+
+    updatedDatas[dataIndex] = newUpdatedData;
+
+    setData(updatedDatas);
+
   }
 
   const deleteData = (id: number) => {
@@ -76,7 +73,7 @@ const DataProvider: React.FC<Props> = ({ children }) => {
   }
 
   return (
-    <DataContext.Provider value={{ datas, addData, updateData, deleteData }}>
+    <DataContext.Provider value={{ datas, idCounter, addData, updateData, deleteData }}>
       {children}
     </DataContext.Provider>
   );

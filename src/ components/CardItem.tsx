@@ -14,7 +14,7 @@ type CardProps = {
         birthdate: string,
         tel: string
     },
-    handleOpenEdit: () => void,
+    handleOpenEdit: (id: number) => void,
     deleteData: (id: number) => void
 }
 
@@ -23,12 +23,12 @@ const CardItem: React.FC<CardProps> = ({ item, handleOpenEdit, deleteData }) => 
     const ExtraCard = () => {
         return (
             <div>
-                <Button className='mx-2' onClick={handleOpenEdit}> <AiFillEdit /> </Button>
+                <Button className='mx-2' onClick={() => handleOpenEdit(item.id)}> <AiFillEdit /> </Button>
                 <Button onClick={() => deleteData(item.id)}> <AiFillDelete /> </Button>
             </div>
         )
     }
-    
+
     return (
         <div className='mx-4 mb-4'>
             <Card title={`${item.name} ${item.lastname}`} extra={<ExtraCard />} className='my-card'>

@@ -10,6 +10,7 @@ export interface DataType{
 
 export type ContextData = {
     datas: DataType[],
+    idCounter: number,
     addData: (data: DataType) => void,
     updateData: (data: DataType) => void,
     deleteData: (id: number) => void

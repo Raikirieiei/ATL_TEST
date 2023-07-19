@@ -11,22 +11,23 @@ const MainForm = () => {
 
     const [openAdd, setOpenAdd] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [thisId, setThisId] = useState(0);
     const [form] = Form.useForm();
     const [currentPage, setCurrentPage] = useState(1);
     const itemPerPage = 4
 
-    const {datas , addData, updateData, deleteData} = useContext(DataContext) as ContextData
+    const { datas, idCounter, addData, updateData, deleteData } = useContext(DataContext) as ContextData
 
     const onChangePage: PaginationProps['onChange'] = (page) => {
         setCurrentPage(page);
     };
 
 
-    const indexLastItem = currentPage *  itemPerPage
+    const indexLastItem = currentPage * itemPerPage
     const indexFirstItem = indexLastItem - itemPerPage
     const itemInPage = datas.slice(indexFirstItem, indexLastItem)
 
-    
+
     const handleOpenAdd = () => {
         setOpenAdd(true);
     };
@@ -37,11 +38,13 @@ const MainForm = () => {
 
     const handleSubmitAdd = (values: any) => {
         console.log('Submitted values:', values);
-        addData(values);
+        const id = idCounter
+        addData({ ...values, id });
         setOpenAdd(false);
     };
 
-    const handleOpenEdit = () => {
+    const handleOpenEdit = (id: number) => {
+        setThisId(id)
         setOpenEdit(true);
     };
 
@@ -84,6 +87,7 @@ const MainForm = () => {
                     modalState={openEdit}
                     handleClose={handleCloseEdit}
                     handleSubmit={handleSubmitEdit}
+                    id={thisId}
                 />
             </div>
 
@@ -91,6 +95,15 @@ const MainForm = () => {
                 {itemInPage.map((item) => (
                     <>
                         <CardItem key={item.id} item={item} handleOpenEdit={handleOpenEdit} deleteData={handleDelete} />
+                        {/* <ModalForm
+                            operation='edit'
+                            form={form}
+                            modalState={openEdit}
+                            handleClose={handleCloseEdit}
+                            handleSubmit={handleSubmitEdit}
+                            item={item}
+                            id={thisId}
+                        /> */}
                     </>
                 ))}
 
