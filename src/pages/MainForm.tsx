@@ -93,15 +93,6 @@ const MainForm = () => {
                 {itemInPage.map((item) => (
                     <>
                         <CardItem key={item.id} item={item} handleOpenEdit={handleOpenEdit} deleteData={handleDelete} />
-                        {/* <ModalForm
-                            operation='edit'
-                            form={form}
-                            modalState={openEdit}
-                            handleClose={handleCloseEdit}
-                            handleSubmit={handleSubmitEdit}
-                            item={item}
-                            id={thisId}
-                        /> */}
                     </>
                 ))}
 
