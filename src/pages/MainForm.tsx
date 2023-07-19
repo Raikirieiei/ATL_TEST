@@ -1,41 +1,32 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './mainform.css'
-import { Button, Form, Modal, Input, Radio, InputNumber } from 'antd'
+import { Button, Form, Pagination } from 'antd'
+import type { PaginationProps } from 'antd';
 import CardItem from '../ components/CardItem'
 import ModalForm from '../ components/ModalForm'
+import { DataContext } from '../contexts/FormContext';
+import { ContextData } from "../datatypes/dataType";
 
 const MainForm = () => {
 
     const [openAdd, setOpenAdd] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [thisId, setThisId] = useState(0);
     const [form] = Form.useForm();
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemPerPage = 4
 
-    const list = [
-        {
-            id: 1,
-            name: 'eiei1',
-            lastname: 'gum1',
-            email: 'nonono1@aaa.com',
-            gender: 'male',
-            tel: '0001',
-        },
-        {
-            id: 2,
-            name: 'eiei2',
-            lastname: 'gum2',
-            email: 'nonono2@aaa.com',
-            gender: 'female',
-            tel: '0002',
-        },
-        {
-            id: 3,
-            name: 'eiei3',
-            lastname: 'gum3',
-            email: 'nonono3@aaa.com',
-            gender: 'other',
-            tel: '0003',
-        },
-    ]
+    const { datas, idCounter, addData, updateData, deleteData } = useContext(DataContext) as ContextData
+
+    const onChangePage: PaginationProps['onChange'] = (page) => {
+        setCurrentPage(page);
+    };
+
+
+    const indexLastItem = currentPage * itemPerPage
+    const indexFirstItem = indexLastItem - itemPerPage
+    const itemInPage = datas.slice(indexFirstItem, indexLastItem)
+
 
     const handleOpenAdd = () => {
         setOpenAdd(true);
@@ -46,11 +37,13 @@ const MainForm = () => {
     };
 
     const handleSubmitAdd = (values: any) => {
-        console.log('Submitted values:', values);
+        const id = idCounter
+        addData({ ...values, id });
         setOpenAdd(false);
     };
 
-    const handleOpenEdit = () => {
+    const handleOpenEdit = (id: number) => {
+        setThisId(id)
         setOpenEdit(true);
     };
 
@@ -59,9 +52,13 @@ const MainForm = () => {
     };
 
     const handleSubmitEdit = (values: any) => {
-        console.log('Submitted values:', values);
+        updateData(values)
         setOpenEdit(false);
     };
+
+    const handleDelete = (id: number) => {
+        deleteData(id)
+    }
 
     return (
         <div className='md:container md:mx-auto'>
@@ -88,18 +85,21 @@ const MainForm = () => {
                     modalState={openEdit}
                     handleClose={handleCloseEdit}
                     handleSubmit={handleSubmitEdit}
+                    id={thisId}
                 />
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-2 overflow-auto'>
-                {list.map((item) => (
+                {itemInPage.map((item) => (
                     <>
-                        <CardItem item={item} handleOpenEdit={handleOpenEdit} />
+                        <CardItem key={item.id} item={item} handleOpenEdit={handleOpenEdit} deleteData={handleDelete} />
                     </>
                 ))}
 
             </div>
-
+            <div className='flex justify-center items-center'>
+                <Pagination current={currentPage} onChange={onChangePage} total={datas.length} pageSize={itemPerPage} />
+            </div>
         </div>
     )
 }

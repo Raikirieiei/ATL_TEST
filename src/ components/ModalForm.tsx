@@ -1,16 +1,26 @@
-import React from 'react'
-import { Button, Form, Modal, Input, Radio, InputNumber, FormInstance } from 'antd'
+import React, { useContext, useState, useEffect } from 'react'
+import { Button, Form, Modal, Input, Radio, InputNumber, FormInstance, DatePicker, DatePickerProps } from 'antd'
 
 type ModalProps = {
     operation: string,
     form: FormInstance<any>,
     modalState: boolean,
     handleClose: () => void,
-    handleSubmit: (values: any) => void
+    handleSubmit: (values: any) => void,
+    item?: {
+        id: number,
+        name: string,
+        lastname: string,
+        email: string,
+        gender: string,
+        birthdate: string,
+        tel: string
+    },
+    id?: number
+
 }
 
-const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit, modalState, form }) => {
-
+const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit, modalState, form, item, id }) => {
 
     const genderArray = [
         { label: 'Male', value: 'male' },
@@ -29,13 +39,34 @@ const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit,
         },
     };
 
+    const customFormat1 = 'DD-MM-YYYY'
+
+    const customFormat: DatePickerProps['format'] = (value) =>
+        `${value.format(customFormat1)}`;
+        
+    const handleFormClose = () => {
+        form.resetFields();
+        handleClose()
+    }
+
+    const handleEditFormSubmit = (values: any) => {
+        handleSubmit({ ...values, id })
+        form.resetFields();
+    }
+
+    const handleAddFormSubmit = (values: any) => {
+        handleSubmit(values)
+        form.resetFields();
+    }
+    
     return (
         <Modal
-            title={`${operation == 'add' ? 'Add' : 'Edit'} Information`}
+            title={`${operation === 'add' ? 'Add' : 'Edit'} Information`}
             open={modalState}
-            onCancel={handleClose}
+            onCancel={handleFormClose}
+            width={750}
             footer={[
-                <Button key="cancel" onClick={handleClose}>
+                <Button key="cancel" onClick={handleFormClose}>
                     Cancel
                 </Button>,
                 <Button key="submit" type="primary" onClick={() => form.submit()}>
@@ -43,7 +74,7 @@ const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit,
                 </Button>,
             ]}
         >
-            <Form {...formItemLayout} form={form} onFinish={handleSubmit}>
+            <Form {...formItemLayout} form={form} onFinish={operation === 'edit' ? handleEditFormSubmit : handleAddFormSubmit}>
                 <Form.Item
                     label="Name"
                     name="name"
@@ -79,6 +110,13 @@ const ModalForm: React.FC<ModalProps> = ({ operation, handleClose, handleSubmit,
                             <Radio value={item.value}>{item.label}</Radio>
                         )}
                     </Radio.Group>
+                </Form.Item>
+                <Form.Item
+                    label="Date of Birth"
+                    name="birthdate"
+                    rules={[{ required: true, message: 'Please select your birth date' }]}
+                >
+                        <DatePicker style={{ width: '100%' }} format={customFormat} placeholder='DD-MM-YYYY' />
                 </Form.Item>
                 <Form.Item
                     label="Tel"
